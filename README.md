@@ -19,3 +19,11 @@ Navigate to the location where you cloned the repository.
 Double click on the `cf-dotnet-exception-handling-and-debugging` directory.
 
 Then select and open `ExceptionHandling.sln`
+
+## Visuals
+
+## Change Log
+
+**1.0** - 20200317
+- Initial respository creation.
+- Created initial program from specifications provided.
