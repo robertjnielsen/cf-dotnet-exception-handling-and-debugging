@@ -6,8 +6,19 @@ namespace ExceptionHandling
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome to my game! Let's do some math!");
-            StartSequence();
+            try
+            {
+                Console.WriteLine("Welcome to my game! Let's do some math!");
+                StartSequence();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Oops! You may have borked this: {e}");
+            }
+            finally
+            {
+                Console.WriteLine("Program is complete.");
+            }
         }
 
         /// <summary>
@@ -15,27 +26,37 @@ namespace ExceptionHandling
         /// </summary>
         static void StartSequence()
         {
-            Console.WriteLine("Please enter a number greater than zero:");
-            int number = Convert.ToInt32(Console.ReadLine());
-            int[] userArray = new int[number];
-            Populate(userArray);
-            int sum = GetSum(userArray);
-            int product = GetProduct(userArray, sum);
-            decimal quotient = GetQuotient(product);
-            Console.WriteLine($"Your array size is: {userArray.Length}");
-            string arrNums = "The numbers in your array are ";
-            for (int i = 0; i < userArray.Length - 1; i++)
+            try
             {
-                arrNums += userArray[i] + ", ";
+                Console.WriteLine("Please enter a number greater than zero:");
+                int number = Convert.ToInt32(Console.ReadLine());
+                int[] userArray = new int[number];
+                Populate(userArray);
+                int sum = GetSum(userArray);
+                int product = GetProduct(userArray, sum);
+                decimal quotient = GetQuotient(product);
+                Console.WriteLine($"Your array size is: {userArray.Length}");
+                string arrNums = "The numbers in your array are ";
+                for (int i = 0; i < userArray.Length - 1; i++)
+                {
+                    arrNums += userArray[i] + ", ";
+                }
+                arrNums += userArray[userArray.Length - 1] + ".";
+                Console.WriteLine(arrNums);
+                Console.WriteLine($"The sum of the array is {sum}.");
+                int factor = product / sum;
+                Console.WriteLine($"{sum} * {factor} = {product}.");
+                decimal divisor = product / quotient;
+                Console.WriteLine($"{product} / {divisor} = {quotient}.");
             }
-            arrNums += userArray[userArray.Length - 1] + ".";
-            Console.WriteLine(arrNums);
-            Console.WriteLine($"The sum of the array is {sum}.");
-            int factor = product / sum;
-            Console.WriteLine($"{sum} * {factor} = {product}.");
-            decimal divisor = product / quotient;
-            Console.WriteLine($"{product} / {divisor} = {quotient}.");
-
+            catch (FormatException e)
+            {
+                Console.WriteLine($"So this happened: {e}");
+            }
+            catch (OverflowException e)
+            {
+                Console.WriteLine($"So this happened: {e}");
+            }
         }
 
         /// <summary>
@@ -82,10 +103,18 @@ namespace ExceptionHandling
         /// <returns>The product of sum multiplied by the factor chosen by the user from the userArray.</returns>
         static int GetProduct(int[] intArr, int sum)
         {
-            Console.WriteLine($"Please enter a number between 1 and {intArr.Length}.");
-            int factor = Convert.ToInt32(Console.ReadLine());
-            int product = sum * intArr[factor - 1];
-            return product;
+            try
+            {
+                Console.WriteLine($"Please enter a number between 1 and {intArr.Length}.");
+                int factor = Convert.ToInt32(Console.ReadLine());
+                int product = sum * intArr[factor - 1];
+                return product;
+            }
+            catch (IndexOutOfRangeException e)
+            {
+                Console.WriteLine($"So this happened: {e}");
+                throw;
+            }
         }
 
         /// <summary>
@@ -95,10 +124,18 @@ namespace ExceptionHandling
         /// <returns>The quotient of dividing the product by a number chosen by the user.</returns>
         static decimal GetQuotient(int product)
         {
-            Console.WriteLine($"Please enter a number to divide your product {product} by.");
-            int divisor = Convert.ToInt32(Console.ReadLine());
-            decimal quotient = decimal.Divide(product, divisor);
-            return quotient;
+            try
+            {
+                Console.WriteLine($"Please enter a number to divide your product {product} by.");
+                int divisor = Convert.ToInt32(Console.ReadLine());
+                decimal quotient = decimal.Divide(product, divisor);
+                return quotient;
+            }
+            catch (DivideByZeroException e)
+            {
+                Console.WriteLine($"So this happened: {e}");
+                return 0;
+            }
         }
     }
 }
